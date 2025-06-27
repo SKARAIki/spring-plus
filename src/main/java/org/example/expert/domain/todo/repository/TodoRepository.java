@@ -21,7 +21,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
 
     // 할 일 날씨로 검색
-    Page<Todo> findTodosByWeatherContainingIgnoreCase(String weather, Pageable pageable);
+    @Query("SELECT t FROM Todo t WHERE t.weather = :weather")
+    Page<Todo> findTodosByWeatherContainingIgnoreCase(@Param("weather") String weather,
+                                                      Pageable pageable);
     default Page<Todo> findTodosByWeather (String weather, Pageable pageable){
         return findTodosByWeatherContainingIgnoreCase(weather, pageable);
     }
