@@ -14,7 +14,10 @@ public class SignupRequest {
     @NotBlank @Email
     private String email;
     @NotBlank
+    private String nickName; // 필수2번. JwtToken 에서 nickName 정보 추가
+    @NotBlank
     private String password;
     @NotBlank
     private String userRole;
+
 }
