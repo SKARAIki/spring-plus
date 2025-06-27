@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -47,20 +49,51 @@ public class TodoService {
         );
     }
 
-    public Page<TodoResponse> getTodos(int page, int size) {
+    public Page<TodoResponse> getTodos(int page, int size,
+                                       String weather,
+                                       LocalDateTime modifiedAtStart,
+                                       LocalDateTime modifiedAtEnd) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
         Page<Todo> todos = todoRepository.findAllByOrderByModifiedAtDesc(pageable);
+        Page<Todo> todosByWeather = todoRepository.findTodosByWeather(weather, pageable);
+        Page<Todo> todosByModifiedAt = todoRepository.findTodosByModifiedAt(modifiedAtStart, modifiedAtEnd, pageable);
 
-        return todos.map(todo -> new TodoResponse(
-                todo.getId(),
-                todo.getTitle(),
-                todo.getContents(),
-                todo.getWeather(),
-                new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
-                todo.getCreatedAt(),
-                todo.getModifiedAt()
-        ));
+        if (!weather.isBlank()) {
+            Page<TodoResponse> todoWeatherResponses = todosByWeather.map(todo -> new TodoResponse(
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getContents(),
+                    todo.getWeather(),
+                    new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+                    todo.getCreatedAt(),
+                    todo.getModifiedAt())
+            );
+            return todoWeatherResponses;
+
+        } else if (modifiedAtStart != null && modifiedAtEnd != null) {
+            Page<TodoResponse> todoModifiedAtResponses = todosByModifiedAt.map(todo -> new TodoResponse(
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getContents(),
+                    todo.getWeather(),
+                    new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+                    todo.getCreatedAt(),
+                    todo.getModifiedAt())
+            );
+            return todoModifiedAtResponses;
+        } else {
+            Page<TodoResponse> todoGetList = todos.map(todo -> new TodoResponse(
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getContents(),
+                    todo.getWeather(),
+                    new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+                    todo.getCreatedAt(),
+                    todo.getModifiedAt()
+            ));
+            return todoGetList;
+        }
     }
 
     public TodoResponse getTodo(long todoId) {
