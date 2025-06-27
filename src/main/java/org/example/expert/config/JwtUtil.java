@@ -33,14 +33,15 @@ public class JwtUtil {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
     }
-
-    public String createToken(Long userId, String email, UserRole userRole) {
+    // 필수2번. JwtToken 에서 nickName 정보 추가
+    public String createToken(Long userId, String email, String nickName, UserRole userRole) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(String.valueOf(userId))
                         .claim("email", email)
+                        .claim("nickName",nickName) // 필수2번. JwtToken 에서 nickName 정보 추가
                         .claim("userRole", userRole)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date) // 발급일

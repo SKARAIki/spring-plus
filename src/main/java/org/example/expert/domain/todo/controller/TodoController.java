@@ -37,6 +37,7 @@ public class TodoController {
             @RequestParam(required = false) LocalDateTime modifiedAtEnd
             ) {
         return ResponseEntity.ok(todoService.getTodos(page, size, weather, modifiedAtStart, modifiedAtEnd));
+
     }
 
     @GetMapping("/todos/{todoId}")
