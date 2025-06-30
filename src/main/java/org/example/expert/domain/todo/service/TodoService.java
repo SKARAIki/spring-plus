@@ -49,7 +49,7 @@ public class TodoService {
                 new UserResponse(user.getId(), user.getEmail())
         );
     }
-
+    @Transactional
     public Page<TodoResponse> getTodos(int page, int size,
                                        String weather,
                                        LocalDateTime modifiedAtStart,
