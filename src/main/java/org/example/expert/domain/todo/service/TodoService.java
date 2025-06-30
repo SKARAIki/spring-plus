@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.client.WeatherClient;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
-import org.example.expert.domain.common.exception.ServerException;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
@@ -116,40 +115,3 @@ public class TodoService {
         );
     }
 }
-//if (modifiedAtStart != null && modifiedAtEnd != null) {
-//Page<TodoResponse> todoModifiedAtResponses = todosByModifiedAt.map(todo -> new TodoResponse(
-//        todo.getId(),
-//        todo.getTitle(),
-//        todo.getContents(),
-//        todo.getWeather(),
-//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
-//        todo.getCreatedAt(),
-//        todo.getModifiedAt())
-//);
-//            return todoModifiedAtResponses;
-//        } else if (weather.isEmpty() && modifiedAtStart == null && modifiedAtEnd == null) {
-//Page<TodoResponse> todoGetList = todos.map(todo -> new TodoResponse(
-//        todo.getId(),
-//        todo.getTitle(),
-//        todo.getContents(),
-//        todo.getWeather(),
-//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
-//        todo.getCreatedAt(),
-//        todo.getModifiedAt()
-//));
-//            return todoGetList;
-//        } else if (!weather.isEmpty()) {
-//Page<TodoResponse> todoWeatherResponses = todosByWeather.map(todo -> new TodoResponse(
-//        todo.getId(),
-//        todo.getTitle(),
-//        todo.getContents(),
-//        todo.getWeather(),
-//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
-//        todo.getCreatedAt(),
-//        todo.getModifiedAt())
-//);
-//            return todoWeatherResponses;
-//
-//        } else {
-//                throw new InvalidRequestException("없어요");
-//        }
