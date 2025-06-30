@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.client.WeatherClient;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
+import org.example.expert.domain.common.exception.ServerException;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-@Transactional (readOnly = true)
+@Transactional(readOnly = true)
 public class TodoService {
 
     private final TodoRepository todoRepository;
@@ -60,7 +61,7 @@ public class TodoService {
         Page<Todo> todosByWeather = todoRepository.findTodosByWeather(weather, pageable);
         Page<Todo> todosByModifiedAt = todoRepository.findTodosByModifiedAt(modifiedAtStart, modifiedAtEnd, pageable);
 
-        if (!weather.isBlank()) {
+        if (weather != null && !weather.isEmpty()) {
             Page<TodoResponse> todoWeatherResponses = todosByWeather.map(todo -> new TodoResponse(
                     todo.getId(),
                     todo.getTitle(),
@@ -95,6 +96,7 @@ public class TodoService {
             ));
             return todoGetList;
         }
+
     }
 
     public TodoResponse getTodo(long todoId) {
@@ -114,3 +116,40 @@ public class TodoService {
         );
     }
 }
+//if (modifiedAtStart != null && modifiedAtEnd != null) {
+//Page<TodoResponse> todoModifiedAtResponses = todosByModifiedAt.map(todo -> new TodoResponse(
+//        todo.getId(),
+//        todo.getTitle(),
+//        todo.getContents(),
+//        todo.getWeather(),
+//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+//        todo.getCreatedAt(),
+//        todo.getModifiedAt())
+//);
+//            return todoModifiedAtResponses;
+//        } else if (weather.isEmpty() && modifiedAtStart == null && modifiedAtEnd == null) {
+//Page<TodoResponse> todoGetList = todos.map(todo -> new TodoResponse(
+//        todo.getId(),
+//        todo.getTitle(),
+//        todo.getContents(),
+//        todo.getWeather(),
+//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+//        todo.getCreatedAt(),
+//        todo.getModifiedAt()
+//));
+//            return todoGetList;
+//        } else if (!weather.isEmpty()) {
+//Page<TodoResponse> todoWeatherResponses = todosByWeather.map(todo -> new TodoResponse(
+//        todo.getId(),
+//        todo.getTitle(),
+//        todo.getContents(),
+//        todo.getWeather(),
+//        new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+//        todo.getCreatedAt(),
+//        todo.getModifiedAt())
+//);
+//            return todoWeatherResponses;
+//
+//        } else {
+//                throw new InvalidRequestException("없어요");
+//        }
