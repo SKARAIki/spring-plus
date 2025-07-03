@@ -18,7 +18,7 @@ public class AdminAccessLoggingAspect {
     private final HttpServletRequest request;
 
     @Pointcut("@annotation(org.example.expert.aop.AdminAccessLogging)")
-    public void adminAccessLoggingAnnotationPointcut() {}
+    private void adminAccessLoggingAnnotationPointcut() {}
 
     @Before("adminAccessLoggingAnnotationPointcut()")
     public void logAfterChangeUserRole(JoinPoint joinPoint) {

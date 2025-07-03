@@ -10,12 +10,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.expert.domain.user.enums.UserRole;
+import org.example.expert.domain.common.enums.UserRole;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class JwtFilter implements Filter {
 
     private final JwtUtil jwtUtil;
@@ -56,11 +63,21 @@ public class JwtFilter implements Filter {
             }
 
             UserRole userRole = UserRole.valueOf(claims.get("userRole", String.class));
+            String nickName = claims.get("nickName", String.class);
+            User user = new User(nickName,null,
+                    List.of(new SimpleGrantedAuthority(userRole.getRole())));
 
-            httpRequest.setAttribute("userId", Long.parseLong(claims.getSubject()));
-            httpRequest.setAttribute("email", claims.get("email"));
-            httpRequest.setAttribute("nickName", claims.get("nickName"));
-            httpRequest.setAttribute("userRole", claims.get("userRole"));
+            SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities()));
+
+
+//            스프링 시큐리티 사용으로 주석처리
+//            httpRequest.setAttribute("userId", Long.parseLong(claims.getSubject()));
+//            httpRequest.setAttribute("email", claims.get("email"));
+//            httpRequest.setAttribute("nickName", claims.get("nickName")); // set nickName 추가
+//            httpRequest.setAttribute("userRole", claims.get("userRole"));
+
 
             if (url.startsWith("/admin")) {
                 // 관리자 권한이 없는 경우 403을 반환합니다.
@@ -93,3 +110,4 @@ public class JwtFilter implements Filter {
         Filter.super.destroy();
     }
 }
+

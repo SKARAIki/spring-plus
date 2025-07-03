@@ -10,7 +10,7 @@ import org.example.expert.domain.auth.dto.response.SignupResponse;
 import org.example.expert.domain.auth.exception.AuthException;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.user.entity.User;
-import org.example.expert.domain.user.enums.UserRole;
+import org.example.expert.domain.common.enums.UserRole;
 import org.example.expert.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

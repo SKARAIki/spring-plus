@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.entity.Timestamped;
-import org.example.expert.domain.user.enums.UserRole;
+import org.example.expert.domain.common.enums.UserRole;
 
 @Getter
 @Entity
