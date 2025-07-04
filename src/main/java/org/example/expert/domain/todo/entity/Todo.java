@@ -7,6 +7,7 @@ import org.example.expert.domain.comment.entity.Comment;
 import org.example.expert.domain.common.entity.Timestamped;
 import org.example.expert.domain.manager.entity.Manager;
 import org.example.expert.domain.user.entity.User;
+import org.springframework.scheduling.config.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,5 +40,21 @@ public class Todo extends Timestamped {
         this.weather = weather;
         this.user = user;
         this.managers.add(new Manager(user, this));
+    }
+
+    private Todo(String contents) {
+        this.contents = contents;
+    }
+
+    public void updateContents1(String contents) {
+        this.contents = contents;
+    }
+    public Todo updateContents2(String contents) {
+        this.contents =contents;
+        return this;
+    }
+
+    public static Todo updateContents3(String contents) {
+        return new Todo(contents);
     }
 }
