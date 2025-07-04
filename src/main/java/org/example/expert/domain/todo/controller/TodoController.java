@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,10 +25,10 @@ public class TodoController {
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     @PostMapping("/todos")
     public ResponseEntity<TodoSaveResponse> saveTodo(
-            @AuthenticationPrincipal AuthUser authUser,
+            @AuthenticationPrincipal User user,
             @Valid @RequestBody TodoSaveRequest todoSaveRequest
     ) {
-        return ResponseEntity.ok(todoService.saveTodo(authUser, todoSaveRequest));
+        return ResponseEntity.ok(todoService.saveTodo(user, todoSaveRequest));
     }
 
     @GetMapping("/todos")

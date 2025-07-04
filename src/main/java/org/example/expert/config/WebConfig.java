@@ -16,11 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final HttpServletRequest request;
 
-    // ArgumentResolver 등록
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthUserArgumentResolver());
-    }
     @Bean
     public AdminAccessLoggingAspect adminAccessLoggingAspect() {
         return new AdminAccessLoggingAspect(request);

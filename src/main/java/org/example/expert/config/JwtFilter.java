@@ -63,20 +63,13 @@ public class JwtFilter implements Filter {
             }
 
             UserRole userRole = UserRole.valueOf(claims.get("userRole", String.class));
-            String nickName = claims.get("nickName", String.class);
-            User user = new User(nickName,null,
+            String userName = claims.get("nickName", String.class);
+            User user = new User(userName, "",
                     List.of(new SimpleGrantedAuthority(userRole.getRole())));
 
             SecurityContextHolder
                     .getContext()
-                    .setAuthentication(new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities()));
-
-
-//            스프링 시큐리티 사용으로 주석처리
-//            httpRequest.setAttribute("userId", Long.parseLong(claims.getSubject()));
-//            httpRequest.setAttribute("email", claims.get("email"));
-//            httpRequest.setAttribute("nickName", claims.get("nickName")); // set nickName 추가
-//            httpRequest.setAttribute("userRole", claims.get("userRole"));
+                    .setAuthentication(new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities()));
 
 
             if (url.startsWith("/admin")) {

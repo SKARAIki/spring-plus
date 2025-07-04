@@ -1,6 +1,7 @@
 package org.example.expert.domain.common.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.example.expert.domain.common.enums.UserRole;
 
 @Getter
